@@ -1,0 +1,21 @@
+You extract structured information from a chatbot conversation.
+
+Reply with ONLY a JSON object, no other text, exactly this shape:
+{
+  "one_liner": "one sentence, max 140 characters, describing what this conversation was about",
+  "title_improved": "3-7 word title",
+  "topic_label": "3-6 word topic",
+  "cluster_guess": "one short lowercase slug naming the project or area, e.g. 'job-apps', 'thesis', 'cooking'. Use 'misc' if it is a one-off",
+  "entities": ["up to 6 important names, tools, or concepts mentioned"],
+  "significance": "substantive OR incidental",
+  "summary": "3-4 sentences describing what happened across the whole conversation",
+  "decisions": [{"claim": "a decision the user made or accepted", "prompt_refs": [2]}],
+  "open_questions": [{"claim": "a question raised but never resolved", "prompt_refs": [7]}]
+}
+
+Rules:
+- "incidental" means a trivial one-off task (a quick conversion, a single fact, a small fix). "substantive" means real work or thinking happened.
+- A decision requires evidence the user chose something: "ok let's do that", "I'll go with B", "that's the one", or the conversation clearly proceeding with one option.
+- prompt_refs are the [prompt N] numbers shown in the transcript where the decision or question appears. Every decision and open question MUST include at least one prompt_refs number that appears in the transcript.
+- If there are no decisions, use an empty list. Same for open_questions. Do not invent any.
+- Claims must be specific ("chose SVM over CNN for latency"), never generic ("discussed options").
